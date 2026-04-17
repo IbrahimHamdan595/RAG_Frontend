@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+
+/* ── CSS Variables ────────────────────────────────────────────────────────── */
+:root {
+  --font-display: 'Bebas Neue', cursive;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* Dark theme (default) */
+  --bg:           #080a0f;
+  --panel:        #0d1117;
+  --surface:      #131920;
+  --border:       #1c2535;
+  --muted:        #2a3a52;
+  --dim:          #4a6080;
+  --soft:         #8aa0bc;
+  --text:         #dce8f5;
+  --bright:       #f0f6ff;
+  --amber:        #f0a030;
+  --amber-dim:    #7a5018;
+  --amber-glow:   rgba(240,160,48,0.12);
+  --green:        #3dd68c;
+  --red:          #f05060;
+  --scanline:     rgba(255,255,255,0.018);
+}
+
+.light {
+  --bg:         #f0f3f8;
+  --panel:      #ffffff;
+  --surface:    #f8fafc;
+  --border:     #dde3ec;
+  --muted:      #c5d0de;
+  --dim:        #8a9ab0;
+  --soft:       #5a7090;
+  --text:       #1a2535;
+  --bright:     #0a1525;
+  --amber:      #c07818;
+  --amber-dim:  #f0d090;
+  --amber-glow: rgba(192,120,24,0.10);
+  --green:      #1a9060;
+  --red:        #c03040;
+  --scanline:   rgba(0,0,0,0.025);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-family: var(--font-mono);
+  background: var(--bg);
+  color: var(--text);
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Scanline overlay ─────────────────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    var(--scanline) 0px,
+    var(--scanline) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: var(--panel); }
+::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--dim); }
+
+/* ── Utility classes ──────────────────────────────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-mono    { font-family: var(--font-mono); }
+
+.text-amber   { color: var(--amber); }
+.bg-amber-glow{ background: var(--amber-glow); }
+.border-amber { border-color: var(--amber); }
+
+/* ── Grid background ──────────────────────────────────────────────────────── */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: center center;
+}
+
+/* ── Glow effects ─────────────────────────────────────────────────────────── */
+.amber-glow-sm {
+  box-shadow: 0 0 12px rgba(240,160,48,0.2), 0 0 24px rgba(240,160,48,0.08);
+}
+.amber-glow-text {
+  text-shadow: 0 0 20px rgba(240,160,48,0.4);
+}
+
+/* ── Animations ───────────────────────────────────────────────────────────── */
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes blink   { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes progressFill {
+  from { width: 0%; }
+  to   { width: var(--target-width); }
+}
+
+.animate-fade-in  { animation: fadeIn  0.4s ease forwards; }
+.animate-slide-up { animation: slideUp 0.35s ease forwards; }
+.animate-blink    { animation: blink   1.2s step-end infinite; }
+
+.shimmer-text {
+  background: linear-gradient(90deg, var(--amber) 0%, #ffd080 40%, var(--amber) 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ── Stagger delays ───────────────────────────────────────────────────────── */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+
+/* ── No-scrollbar ─────────────────────────────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
